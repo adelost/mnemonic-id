@@ -2,7 +2,7 @@ import verbs from './words/verbs';
 import animals from './words/noun';
 import adjectives from './words/adjectives';
 
-interface IdOpts {
+export interface IdOpts {
   /** Number of adjectives given to object/subject */
   adjectives?: number;
   /** Creates subject in id sentence */
@@ -19,6 +19,8 @@ interface IdOpts {
   delimiter?: string;
   /** Capitalize each word in sentence */
   capitalize?: boolean;
+  /** Conjugate verb to 3rd person (e.g. "find" -> "finds") */
+  thirdPerson?: boolean;
 }
 
 /** Returns id in format "noun" (e.g. "narwhal"), ≈ 10^2 permutations, 10 max length */
@@ -38,7 +40,7 @@ export function createNameId(opts: IdOpts = {}): string {
   });
 }
 
-/** Returns id in format "adj+adj+noun" (e.g. "hungry-hippo"), ≈ 10^6 permutations, 28 max length */
+/** Returns id in format "adj+adj+noun" (e.g. "hot-splendid-duck"), ≈ 10^8 permutations, 28 max length */
 export function createLongNameId(opts?: IdOpts): string {
   return createCustomId({
     adjectives: 2,
@@ -47,7 +49,7 @@ export function createLongNameId(opts?: IdOpts): string {
   });
 }
 
-/** Returns id in format "adj+noun+id" (e.g. "dull-dugong-QkCHmf"), ≈ 10^14 permutations, 26 max length */
+/** Returns id in format "adj+noun+id" (e.g. "dull-dugong-QkCHmf"), ≈ 10^16 permutations, 26 max length */
 export function createUniqueNameId(opts: IdOpts = {}): string {
   return createNameId({
     idSuffix: 6,
@@ -55,7 +57,7 @@ export function createUniqueNameId(opts: IdOpts = {}): string {
   });
 }
 
-/** Returns id in format "verb+adj+noun" (e.g. "find-pretty-sheep"), ≈ 10^6 permutations, 28 max length */
+/** Returns id in format "verb+adj+noun" (e.g. "find-pretty-sheep"), ≈ 10^7 permutations, 28 max length */
 export function createQuestId(opts: IdOpts = {}): string {
   return createCustomId({
     adjectives: 1,
@@ -65,7 +67,7 @@ export function createQuestId(opts: IdOpts = {}): string {
   });
 }
 
-/** Returns id in format "adj+noun+verb+adj+noun" (e.g. "eloquent-beaver-quote-unknown-dinosaur"), ≈ 10^10 permutations, 48 max length */
+/** Returns id in format "adj+noun+verb+adj+noun" (e.g. "eloquent-beaver-quote-unknown-dinosaur"), ≈ 10^12 permutations, 48 max length */
 export function createStoryId(opts: IdOpts = {}): string {
   return createCustomId({
     adjectives: 1,
@@ -76,7 +78,7 @@ export function createStoryId(opts: IdOpts = {}): string {
   });
 }
 
-/** Returns id in format "adj+adj+noun+verb+adj+adj+noun" (e.g. "wicked-evil-eel-help-horrible-pretty-hamster"), ≈ 10^14 permutations,
+/** Returns id in format "adj+adj+noun+verb+adj+adj+noun" (e.g. "wicked-evil-eel-help-horrible-pretty-hamster"), ≈ 10^17 permutations,
  * 64 max length */
 export function createLongStoryId(opts: IdOpts = {}): string {
   return createStoryId({
@@ -85,7 +87,7 @@ export function createLongStoryId(opts: IdOpts = {}): string {
   });
 }
 
-/** Returns number of given length, = length^10-length^9 permutations */
+/** Returns number of given length, = 10^length - 10^(length-1) permutations */
 export function createNumberId(length: number): string {
   const choices = '0123456789';
   let out = '';
@@ -98,9 +100,9 @@ export function createNumberId(length: number): string {
   return out;
 }
 
-/** Returns id of given length, = 40^x permutations */
+/** Returns id of given length, = 62^length permutations */
 export function createId(length: number): string {
-  const choices = 'ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvxyz0123456789';
+  const choices = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let out = '';
   for (let i = 0; i < length; i += 1) {
     out += choices[randomInt(0, choices.length)];
@@ -130,7 +132,8 @@ export function createCustomId(opts: IdOpts = {}): string {
     parts.push(randomFromList(animals));
   }
   if (opts.verb) {
-    parts.push(randomFromList(verbs));
+    const verb = randomFromList(verbs);
+    parts.push(opts.thirdPerson ? toThirdPerson(verb) : verb);
   }
   if (opts.object) {
     parts.push(
@@ -162,6 +165,16 @@ function randomFromList<T>(list: T[]): T {
 
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
+}
+
+function toThirdPerson(verb: string): string {
+  if (verb.endsWith('y') && !'aeiou'.includes(verb[verb.length - 2])) {
+    return verb.slice(0, -1) + 'ies';
+  }
+  if (/(?:s|sh|ch|x|z)$/.test(verb)) {
+    return verb + 'es';
+  }
+  return verb + 's';
 }
 
 function capitalize(text: string): string {

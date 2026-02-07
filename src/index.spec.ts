@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import * as mnemonicId from './index';
 
 describe('mnemonicId', () => {
@@ -26,6 +27,48 @@ describe('mnemonicId', () => {
       ).toMatch(/^\w+_\w+_\w+_\w+_\w+_\w+_\w+_\d{4}_\w{6}/);
       expect(mnemonicId.createCustomId()).toMatch('');
       expect(mnemonicId.createNumberId(-1)).toMatch('');
+    });
+  });
+
+  describe('createId charset', () => {
+    it('uses full alphanumeric charset (62 chars including W, w, y)', () => {
+      const chars = new Set<string>();
+      for (let i = 0; i < 10000; i++) {
+        const id = mnemonicId.createId(1);
+        chars.add(id);
+      }
+      expect(chars.has('W')).toBe(true);
+      expect(chars.has('w')).toBe(true);
+      expect(chars.has('y')).toBe(true);
+    });
+  });
+
+  describe('thirdPerson option', () => {
+    it('conjugates verbs to 3rd person', () => {
+      // Generate many quest IDs with thirdPerson and collect the verbs
+      const verbs = new Set<string>();
+      for (let i = 0; i < 2000; i++) {
+        const id = mnemonicId.createQuestId({ thirdPerson: true });
+        const verb = id.split('-')[0];
+        verbs.add(verb);
+      }
+      // Every verb should end in s (covers -s, -es, -ies)
+      for (const verb of verbs) {
+        expect(verb).toMatch(/s$/);
+      }
+    });
+
+    it('leaves verbs unconjugated by default', () => {
+      const verbs = new Set<string>();
+      for (let i = 0; i < 2000; i++) {
+        const id = mnemonicId.createQuestId();
+        const verb = id.split('-')[0];
+        verbs.add(verb);
+      }
+      // Base form verbs — some end in s (e.g. "impress", "assess") but
+      // most don't. Verify we get at least some non-s-ending verbs.
+      const nonS = [...verbs].filter((v) => !v.endsWith('s'));
+      expect(nonS.length).toBeGreaterThan(0);
     });
   });
 });

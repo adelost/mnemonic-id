@@ -1,6 +1,6 @@
 # Mnemonic id
 
-[![Coverage Status](https://coveralls.io/repos/github/Adelost/mnemonic-id/badge.svg?branch=master)](https://coveralls.io/github/Adelost/mnemonic-id?branch=master)
+[![npm](https://img.shields.io/npm/v/mnemonic-id)](https://www.npmjs.com/package/mnemonic-id)
 ![npm type definitions](https://img.shields.io/npm/types/mnemonic-id)
 
 Library to generate easy to remember, and sometimes entertaining, human readable ids.
@@ -11,10 +11,10 @@ createStoryId(); // -> awesome-chipmunk-banish-evil-rat
 Partly inspired by Docker name generator and [major mnemonic system](https://en.wikipedia.org/wiki/Mnemonic_major_system#Example_words).
 
 ## Highlights
-* Dictionary of approximate 150 nouns (animals), 200 verbs, 500 adjectives.
-* Deterministic id size, with max word length of 10 for nouns, 8 for verbs and adjectives. 
+* Dictionary of ~150 nouns (animals), ~190 verbs, ~470 adjectives.
+* Deterministic id size, with max word length of 10 for nouns, 8 for verbs and adjectives.
 * Customizable id generation.
-* TypeScript annotated API.
+* TypeScript annotated API with ESM + CJS dual exports.
 * Slim package size with no dependencies.
 
 ## Install
@@ -49,13 +49,13 @@ createNounId(); // -> narwhal
 /** "adj+noun", ≈ 10^5 permutations, 19 max length */
 createNameId(); // -> hungry-hippo
 
-/** "adj+adj+noun", ≈ 10^6 permutations, 28 max length */
+/** "adj+adj+noun", ≈ 10^8 permutations, 28 max length */
 createLongNameId(); // -> hot-splendid-duck
 
-/** "adj+noun+id", ≈ 10^14 permutations, 26 max length */
+/** "adj+noun+id", ≈ 10^16 permutations, 26 max length */
 createUniqueNameId(); // -> dull-dugong-QkCHmf
 
-/** "verb+adj+noun", ≈ 10^6 permutations, 28 max length */
+/** "verb+adj+noun", ≈ 10^7 permutations, 28 max length */
 createQuestId(); // -> find-pretty-sheep
 
 /** "adj+noun+verb+adj+noun", ≈ 10^12 permutations, 48 max length */
@@ -64,11 +64,11 @@ createStoryId(); // -> eloquent-beaver-quote-unknown-dinosaur
 /** "adj+adj+noun+verb+adj+adj+noun", ≈ 10^17 permutations, 64 max length */
 createLongStoryId(); // -> wicked-evil-eel-help-horrible-pretty-hamster
 
-/** "number" of given length, length^10 - length^9 permutations */
-createNumberId(10); // -> 6941634647  (= 10^10-10^9 permutations)
+/** "number" of given length, 10^length - 10^(length-1) permutations */
+createNumberId(10); // -> 6941634647  (= 10^10 - 10^9 permutations)
 
-/** "id" of given length, = 40^length permutations */
-createId(10); // -> uXOGTUiOoD  (= 40^10 ≈ 10^16 permutations)
+/** "id" of given length, = 62^length permutations */
+createId(10); // -> uXOGTUiOoD  (= 62^10 ≈ 10^18 permutations)
 ```
 
 Or customize your own:
@@ -90,7 +90,7 @@ Most existing formats can also be customized:
 ```ts
 createNameId({
   adjectives: 3, 
-  capitalize: true
+  capitalize: true,
   delimiter: '',
 }); // -> OrdinaryCuddlyLaughingSquid
 ```
@@ -120,7 +120,7 @@ interface IdOpts {
 }
 ```
 
-# Alternatives
+## Alternatives
 
 Similar libraries that also exist:
 
