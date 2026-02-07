@@ -1,21 +1,21 @@
 # Mnemonic id
 
-[![Coverage Status](https://coveralls.io/repos/github/Adelost/mnemonic-id/badge.svg?branch=master)](https://coveralls.io/github/Adelost/mnemonic-id?branch=master)
+[![npm](https://img.shields.io/npm/v/mnemonic-id)](https://www.npmjs.com/package/mnemonic-id)
 ![npm type definitions](https://img.shields.io/npm/types/mnemonic-id)
 
-Library to generate easy to remember, and sometimes entertaining, human readable ids.
+Generate memorable, human-readable ids that read like sentences.
+
+Nobody remembers `a7xB9qL`. Everyone remembers the `eloquent-beaver` that `quotes-unknown-dinosaur`.
+
 ```ts
-createStoryId(); // -> awesome-chipmunk-banish-evil-rat
+createNameId();  // -> hungry-hippo
+createStoryId(); // -> eloquent-beaver-quotes-unknown-dinosaur
 ```
 
-Partly inspired by Docker name generator and [major mnemonic system](https://en.wikipedia.org/wiki/Mnemonic_major_system#Example_words).
-
-## Highlights
-* Dictionary of approximate 150 nouns (animals), 200 verbs, 500 adjectives.
-* Deterministic id size, with max word length of 10 for nouns, 8 for verbs and adjectives. 
-* Customizable id generation.
-* TypeScript annotated API.
-* Slim package size with no dependencies.
+* Sentence structure: a subject *does something* to an object, not just adjective-animal
+* 8 ready-made formats, from simple (`createNounId`) to unique (`createUniqueNameId`)
+* Predictable max length per format, no surprises in your database columns
+* Zero dependencies, ~4 KB gzipped
 
 ## Install
 
@@ -49,26 +49,26 @@ createNounId(); // -> narwhal
 /** "adj+noun", ≈ 10^5 permutations, 19 max length */
 createNameId(); // -> hungry-hippo
 
-/** "adj+adj+noun", ≈ 10^6 permutations, 28 max length */
+/** "adj+adj+noun", ≈ 10^8 permutations, 28 max length */
 createLongNameId(); // -> hot-splendid-duck
 
-/** "adj+noun+id", ≈ 10^14 permutations, 26 max length */
+/** "adj+noun+id", ≈ 10^16 permutations, 26 max length */
 createUniqueNameId(); // -> dull-dugong-QkCHmf
 
-/** "verb+adj+noun", ≈ 10^6 permutations, 28 max length */
-createQuestId(); // -> find-pretty-sheep
+/** "verb+adj+noun", ≈ 10^7 permutations, 29 max length */
+createQuestId(); // -> finds-pretty-sheep
 
-/** "adj+noun+verb+adj+noun", ≈ 10^12 permutations, 48 max length */
-createStoryId(); // -> eloquent-beaver-quote-unknown-dinosaur
+/** "adj+noun+verb+adj+noun", ≈ 10^12 permutations, 50 max length */
+createStoryId(); // -> eloquent-beaver-quotes-unknown-dinosaur
 
-/** "adj+adj+noun+verb+adj+adj+noun", ≈ 10^17 permutations, 64 max length */
-createLongStoryId(); // -> wicked-evil-eel-help-horrible-pretty-hamster
+/** "adj+adj+noun+verb+adj+adj+noun", ≈ 10^17 permutations, 66 max length */
+createLongStoryId(); // -> wicked-evil-eel-helps-horrible-pretty-hamster
 
-/** "number" of given length, length^10 - length^9 permutations */
-createNumberId(10); // -> 6941634647  (= 10^10-10^9 permutations)
+/** "number" of given length, 10^length - 10^(length-1) permutations */
+createNumberId(10); // -> 6941634647  (= 10^10 - 10^9 permutations)
 
-/** "id" of given length, = 40^length permutations */
-createId(10); // -> uXOGTUiOoD  (= 40^10 ≈ 10^16 permutations)
+/** "id" of given length, = 62^length permutations */
+createId(10); // -> uXOGTUiOoD  (= 62^10 ≈ 10^18 permutations)
 ```
 
 Or customize your own:
@@ -82,7 +82,7 @@ createCustomId({
   idSuffix: 6,
   delimiter: '_',
   capitalize: true
-}); // -> Talented_Bold_Pig_Hunt_Brawny_Supreme_Bumblebee_6343_VQ5EAZ
+}); // -> Talented_Bold_Pig_Hunts_Brawny_Supreme_Bumblebee_6343_VQ5EAZ
 ```
 
 Most existing formats can also be customized:
@@ -90,14 +90,12 @@ Most existing formats can also be customized:
 ```ts
 createNameId({
   adjectives: 3, 
-  capitalize: true
+  capitalize: true,
   delimiter: '',
 }); // -> OrdinaryCuddlyLaughingSquid
 ```
 
 ## Options
-
-Description of options:
 
 ```ts
 interface IdOpts {
@@ -117,12 +115,14 @@ interface IdOpts {
   delimiter?: string;
   /** Capitalize each word in sentence */
   capitalize?: boolean;
+  /** Conjugate verb to 3rd person, e.g. "find" -> "finds" (default: true) */
+  thirdPerson?: boolean;
 }
 ```
 
-# Alternatives
+## Alternatives
 
-Similar libraries that also exist:
+Similar libraries:
 
 * [human-id](https://www.npmjs.com/package/human-id)
 * [project-name-generator](https://www.npmjs.com/package/project-name-generator)

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import * as mnemonicId from './index';
 
 describe('mnemonicId', () => {
@@ -26,6 +27,45 @@ describe('mnemonicId', () => {
       ).toMatch(/^\w+_\w+_\w+_\w+_\w+_\w+_\w+_\d{4}_\w{6}/);
       expect(mnemonicId.createCustomId()).toMatch('');
       expect(mnemonicId.createNumberId(-1)).toMatch('');
+    });
+  });
+
+  describe('createId charset', () => {
+    it('uses full alphanumeric charset (62 chars including W, w, y)', () => {
+      const chars = new Set<string>();
+      for (let i = 0; i < 10000; i++) {
+        const id = mnemonicId.createId(1);
+        chars.add(id);
+      }
+      expect(chars.has('W')).toBe(true);
+      expect(chars.has('w')).toBe(true);
+      expect(chars.has('y')).toBe(true);
+    });
+  });
+
+  describe('thirdPerson option', () => {
+    it('conjugates verbs to 3rd person by default', () => {
+      const verbs = new Set<string>();
+      for (let i = 0; i < 2000; i++) {
+        const id = mnemonicId.createQuestId();
+        const verb = id.split('-')[0];
+        verbs.add(verb);
+      }
+      for (const verb of verbs) {
+        expect(verb).toMatch(/s$/);
+      }
+    });
+
+    it('uses base form verbs when thirdPerson is false', () => {
+      const verbs = new Set<string>();
+      for (let i = 0; i < 2000; i++) {
+        const id = mnemonicId.createQuestId({ thirdPerson: false });
+        const verb = id.split('-')[0];
+        verbs.add(verb);
+      }
+      // Base form verbs — some end in s (e.g. "impress") but most don't
+      const nonS = [...verbs].filter((v) => !v.endsWith('s'));
+      expect(nonS.length).toBeGreaterThan(0);
     });
   });
 });

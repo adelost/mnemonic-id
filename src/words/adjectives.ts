@@ -242,7 +242,6 @@ mindless
 modern
 modest
 moldy
-money
 moody
 moonlit
 moving
@@ -281,7 +280,6 @@ perfect
 pink
 placid
 plain
-plant
 plastic
 pleasant
 poetic
