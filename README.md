@@ -71,6 +71,16 @@ createNumberId(10); // -> 6941634647  (= 10^10 - 10^9 permutations)
 createId(10); // -> uXOGTUiOoD  (= 62^10 ≈ 10^18 permutations)
 ```
 
+| Function | Format | Example | Max length | Permutations |
+|----------|--------|---------|------------|--------------|
+| `createNounId` | noun | `narwhal` | 10 | ~10² |
+| `createNameId` | adj+noun | `hungry-hippo` | 19 | ~10⁵ |
+| `createLongNameId` | adj+adj+noun | `hot-splendid-duck` | 28 | ~10⁸ |
+| `createUniqueNameId` | adj+noun+id | `dull-dugong-QkCHmf` | 26 | ~10¹⁶ |
+| `createQuestId` | verb+adj+noun | `find-pretty-sheep` | 28 | ~10⁷ |
+| `createStoryId` | adj+noun+verb+adj+noun | `eloquent-beaver-quotes-unknown-dinosaur` | 49 | ~10¹² |
+| `createLongStoryId` | adj+adj+noun+verb+adj+adj+noun | `wicked-evil-eel-helps-horrible-pretty-hamster` | 67 | ~10¹⁷ |
+
 Or customize your own:
 ```ts
 createCustomId({
