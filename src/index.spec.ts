@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import * as mnemonicId from './index';
+import adjectives from './words/adjectives';
+import nouns from './words/noun';
+import verbs from './words/verbs';
 
 describe('mnemonicId', () => {
   describe('createId methods', () => {
@@ -40,6 +43,30 @@ describe('mnemonicId', () => {
       expect(chars.has('W')).toBe(true);
       expect(chars.has('w')).toBe(true);
       expect(chars.has('y')).toBe(true);
+    });
+  });
+
+  describe('max length', () => {
+    function toThirdPerson(verb: string): string {
+      if (verb.endsWith('y') && !'aeiou'.includes(verb[verb.length - 2])) return verb.slice(0, -1) + 'ies';
+      if (/(?:s|sh|ch|x|z)$/.test(verb)) return verb + 'es';
+      return verb + 's';
+    }
+
+    const maxAdj = Math.max(...adjectives.map((w) => w.length));
+    const maxNoun = Math.max(...nouns.map((w) => w.length));
+    const maxVerb = Math.max(...verbs.map((w) => w.length));
+    const maxVerbConj = Math.max(...verbs.map((v) => toThirdPerson(v).length));
+    const d = 1; // delimiter
+
+    it('matches documented max lengths', () => {
+      expect(maxNoun).toBe(10);                                                         // createNounId
+      expect(maxAdj + d + maxNoun).toBe(19);                                            // createNameId
+      expect(maxAdj + d + maxAdj + d + maxNoun).toBe(28);                               // createLongNameId
+      expect(maxAdj + d + maxNoun + d + 6).toBe(26);                                    // createUniqueNameId
+      expect(maxVerb + d + maxAdj + d + maxNoun).toBe(28);                              // createQuestId
+      expect(maxAdj + d + maxNoun + d + maxVerbConj + d + maxAdj + d + maxNoun).toBe(49);  // createStoryId
+      expect(maxAdj + d + maxAdj + d + maxNoun + d + maxVerbConj + d + maxAdj + d + maxAdj + d + maxNoun).toBe(67); // createLongStoryId
     });
   });
 
