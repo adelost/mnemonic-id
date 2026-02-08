@@ -1,7 +1,7 @@
 {
   "name": "mnemonic-id",
   "description": "Library to generate easy to remember, and sometimes entertaining, human readable ids",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "license": "MIT",
   "author": "Mattias E. O. Andersson",
   "repository": "github:adelost/mnemonic-id",
