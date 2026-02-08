@@ -55,13 +55,13 @@ createLongNameId(); // -> hot-splendid-duck
 /** "adj+noun+id", ≈ 10^16 permutations, 26 max length */
 createUniqueNameId(); // -> dull-dugong-QkCHmf
 
-/** "verb+adj+noun", ≈ 10^7 permutations, 29 max length */
-createQuestId(); // -> finds-pretty-sheep
+/** "verb+adj+noun", ≈ 10^7 permutations, 28 max length */
+createQuestId(); // -> find-pretty-sheep
 
-/** "adj+noun+verb+adj+noun", ≈ 10^12 permutations, 50 max length */
+/** "adj+noun+verb+adj+noun", ≈ 10^12 permutations, 49 max length */
 createStoryId(); // -> eloquent-beaver-quotes-unknown-dinosaur
 
-/** "adj+adj+noun+verb+adj+adj+noun", ≈ 10^17 permutations, 66 max length */
+/** "adj+adj+noun+verb+adj+adj+noun", ≈ 10^17 permutations, 67 max length */
 createLongStoryId(); // -> wicked-evil-eel-helps-horrible-pretty-hamster
 
 /** "number" of given length, 10^length - 10^(length-1) permutations */

@@ -47,8 +47,8 @@ describe('mnemonicId', () => {
     it('conjugates verbs to 3rd person by default', () => {
       const verbs = new Set<string>();
       for (let i = 0; i < 2000; i++) {
-        const id = mnemonicId.createQuestId();
-        const verb = id.split('-')[0];
+        const id = mnemonicId.createStoryId();
+        const verb = id.split('-')[2];
         verbs.add(verb);
       }
       for (const verb of verbs) {
@@ -56,10 +56,10 @@ describe('mnemonicId', () => {
       }
     });
 
-    it('uses base form verbs when thirdPerson is false', () => {
+    it('uses base form verbs for quest ids', () => {
       const verbs = new Set<string>();
       for (let i = 0; i < 2000; i++) {
-        const id = mnemonicId.createQuestId({ thirdPerson: false });
+        const id = mnemonicId.createQuestId();
         const verb = id.split('-')[0];
         verbs.add(verb);
       }

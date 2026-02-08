@@ -1,6 +1,6 @@
 export default `
 albatross
-alpacka
+alpaca
 anaconda
 ape
 armadillo

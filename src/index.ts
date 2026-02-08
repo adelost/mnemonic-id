@@ -60,17 +60,18 @@ export function createUniqueNameId(opts: IdOpts = {}): string {
   });
 }
 
-/** Returns id in format "verb+adj+noun" (e.g. "finds-pretty-sheep"), ≈ 10^7 permutations, 29 max length */
+/** Returns id in format "verb+adj+noun" (e.g. "find-pretty-sheep"), ≈ 10^7 permutations, 28 max length */
 export function createQuestId(opts: IdOpts = {}): string {
   return createCustomId({
     adjectives: 1,
     verb: true,
     object: true,
+    thirdPerson: false,
     ...opts,
   });
 }
 
-/** Returns id in format "adj+noun+verb+adj+noun" (e.g. "eloquent-beaver-quotes-unknown-dinosaur"), ≈ 10^12 permutations, 50 max length */
+/** Returns id in format "adj+noun+verb+adj+noun" (e.g. "eloquent-beaver-quotes-unknown-dinosaur"), ≈ 10^12 permutations, 49 max length */
 export function createStoryId(opts: IdOpts = {}): string {
   return createCustomId({
     adjectives: 1,
@@ -82,7 +83,7 @@ export function createStoryId(opts: IdOpts = {}): string {
 }
 
 /** Returns id in format "adj+adj+noun+verb+adj+adj+noun" (e.g. "wicked-evil-eel-helps-horrible-pretty-hamster"), ≈ 10^17 permutations,
- * 66 max length */
+ * 67 max length */
 export function createLongStoryId(opts: IdOpts = {}): string {
   return createStoryId({
     adjectives: 2,
